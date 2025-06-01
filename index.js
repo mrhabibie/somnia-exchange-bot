@@ -538,11 +538,9 @@ async function runAutoSwap(pair, autoSwapFunction, lastSwapDirection) {
     }
     addLog(`Memulai swap ke-${i} untuk ${pair}`);
     await delay(3000);
-    const success = await autoSwapFunction();
-    if (success) {
-      await updateWalletData();
-      await delay(3000);
-    }
+    await autoSwapFunction();
+    await updateWalletData();
+    await delay(3000);
     if (i < LOOP_COUNT && !swapCancelled) {
       addLog(`Swap ke-${i} selesai.`, "swap");
       for (let ms = getRandomDelay(); ms > 0; ms -= 1000) {
