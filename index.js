@@ -11,6 +11,7 @@ const NIA_ADDRESS = process.env.NIA_ADDRESS;
 const RAND_STT_AMOUNT = process.env.RAND_STT_AMOUNT;
 const RAND_USDTG_AMOUNT = process.env.RAND_USDTG_AMOUNT;
 const RAND_NIA_AMOUNT = process.env.RAND_NIA_AMOUNT;
+const LOOP_COUNT = process.env.LOOP_COUNT;
 const ROUTER_ADDRESS = "0xb98c15a0dC1e271132e341250703c7e94c059e8D";
 const WSTT_ADDRESS = "0xf22ef0085f6511f70b01a68f360dcc56261f768a";
 const NETWORK_NAME = "Somnia Testnet";
@@ -525,13 +526,12 @@ async function autoSwapSttNia() {
 }
 
 async function runAutoSwap(pair, autoSwapFunction, lastSwapDirection) {
-  const loopCount = 50;
-  addLog(`Mulai ${loopCount} iterasi swap untuk ${pair}.`);
+  addLog(`Mulai ${LOOP_COUNT} iterasi swap untuk ${pair}.`);
   await delay(3000);
 
   swapCancelled = false;
 
-  for (let i = 1; i <= loopCount; i++) {
+  for (let i = 1; i <= LOOP_COUNT; i++) {
     if (swapCancelled) {
       addLog(`Auto swap ${pair} dihentikan pada cycle ${i}.`);
       break;
@@ -543,7 +543,7 @@ async function runAutoSwap(pair, autoSwapFunction, lastSwapDirection) {
       await updateWalletData();
       await delay(3000);
     }
-    if (i < loopCount && !swapCancelled) {
+    if (i < LOOP_COUNT && !swapCancelled) {
       addLog(`Swap ke-${i} selesai.`, "swap");
       for (let ms = getRandomDelay(); ms > 0; ms -= 1000) {
         twisters.put("c", {
@@ -586,6 +586,18 @@ async function main() {
       );
 
       await runAutoSwap("STT & NIA", autoSwapSttNia, lastSwapDirectionSttNia);
+
+      if (walletIndex < keys.length) {
+        addLog("Prepare to next account...", "swap");
+        for (let ms = getRandomDelay(); ms > 0; ms -= 1000) {
+          twisters.put("c", {
+            active: false,
+            text: `└── Info          : Delaying for ${msToTime(ms)}
+——————————————————————————————————————————`,
+          });
+          await delay(1000);
+        }
+      }
     }
 
     addLog("Cooling down...", "swap");
