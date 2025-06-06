@@ -249,6 +249,42 @@ async function getAmountOut(amountIn, path) {
   }
 }
 
+async function requestFaucet() {
+  try {
+    const response = await fetch("https://testnet.somnia.network/api/faucet", {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Content-Type": "application/json",
+        Priority: "u=1, i",
+        "Sec-Ch-Ua":
+          '"Not)A;Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"Windows"',
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+      },
+      body: JSON.stringify({ address: globalWallet.address }),
+    });
+    const data = await response.json();
+    if (response.ok && data?.success) {
+      addLog("Faucet claimed successfully.");
+      return true;
+    } else {
+      addLog(`Claim faucet failed: ${data.details || response.statusText}`);
+      return false;
+    }
+  } catch (error) {
+    addLog(`Unable to claim faucet: ${error.message}`);
+    return false;
+  }
+}
+
 async function reportTransaction() {
   try {
     const payload = {
@@ -575,6 +611,9 @@ async function main() {
       walletInfo.info = `${walletIndex + 1} of ${keys.length}`;
 
       await updateWalletData();
+      await delay(3000);
+
+      await requestFaucet();
       await delay(3000);
 
       await runAutoSwap(
