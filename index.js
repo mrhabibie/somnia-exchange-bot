@@ -613,8 +613,12 @@ async function main() {
       await updateWalletData();
       await delay(3000);
 
-      await requestFaucet();
-      await delay(3000);
+      const faucetClaimed = await requestFaucet();
+      if (faucetClaimed) {
+        await delay(3000);
+        await updateWalletData();
+        await delay(3000);
+      }
 
       await runAutoSwap(
         "STT & USDT.g",
