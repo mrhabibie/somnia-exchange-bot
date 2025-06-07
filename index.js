@@ -383,7 +383,7 @@ async function autoSwapSttUsdtg() {
     const minUsdtgAmount = Number(RAND_USDTG_AMOUNT.split(",")[0].trim());
     const maxUsdtgAmount = Number(RAND_USDTG_AMOUNT.split(",")[1].trim());
     const sttAmount = getRandomNumber(minSttAmount, maxSttAmount, 4);
-    const usdtgAmount = getRandomNumber(minUsdtgAmount, maxUsdtgAmount, 4);
+    const usdtgAmount = usdtgBalance;
 
     let receipt;
 
@@ -484,7 +484,7 @@ async function autoSwapSttNia() {
     const minNiaAmount = Number(RAND_NIA_AMOUNT.split(",")[0].trim());
     const maxNiaAmount = Number(RAND_NIA_AMOUNT.split(",")[1].trim());
     const sttAmount = getRandomNumber(minSttAmount, maxSttAmount, 4);
-    const niaAmount = getRandomNumber(minNiaAmount, maxNiaAmount, 4);
+    const niaAmount = niaBalance;
 
     let receipt;
 
