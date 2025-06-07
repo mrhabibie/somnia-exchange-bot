@@ -609,6 +609,8 @@ async function main() {
     for (let walletIndex = 0; walletIndex < keys.length; walletIndex++) {
       PRIVATE_KEY = keys[walletIndex];
       walletInfo.info = `${walletIndex + 1} of ${keys.length}`;
+      lastSwapDirectionSttUsdtg = "USDTG_TO_STT";
+      lastSwapDirectionSttNia = "NIA_TO_STT";
 
       await updateWalletData();
       await delay(3000);
