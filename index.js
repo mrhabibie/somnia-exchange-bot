@@ -273,7 +273,7 @@ async function requestFaucet() {
     });
     const data = await response.json();
     if (response.ok && data?.success) {
-      addLog("Faucet claimed successfully.");
+      addLog("Faucet claimed successfully.", "swap");
       return true;
     } else {
       addLog(`Claim faucet failed: ${data.details || response.statusText}`);
@@ -619,12 +619,13 @@ async function main() {
       await updateWalletData();
       await delay(3000);
 
+      addLog("Claiming faucet...");
+      await delay(3000);
       const faucetClaimed = await requestFaucet();
       if (faucetClaimed) {
-        await delay(3000);
         await updateWalletData();
-        await delay(3000);
       }
+      await delay(3000);
 
       await runAutoSwap(
         "STT & USDT.g",
