@@ -103,8 +103,9 @@ function addLog(message, type = "info") {
   });
 }
 
-function getRandomDelay() {
-  return Math.random() * (60000 - 30000) + 30000;
+function getRandomDelay(type = "swap") {
+  if (type === "delay") return Math.random() * (60000 - 30000) + 30000;
+  return Math.random() * (30000 - 15000) + 15000;
 }
 
 function getRandomNumber(min, max, decimals = 4) {
@@ -623,6 +624,14 @@ async function main() {
       await delay(3000);
       const faucetClaimed = await requestFaucet();
       if (faucetClaimed) {
+        for (let ms = getRandomDelay("delay"); ms > 0; ms -= 1000) {
+          twisters.put("c", {
+            active: false,
+            text: `└── Info          : Delaying for ${msToTime(ms)}
+——————————————————————————————————————————`,
+          });
+          await delay(1000);
+        }
         await updateWalletData();
       }
       await delay(3000);
@@ -637,7 +646,7 @@ async function main() {
 
       if (walletIndex < keys.length) {
         addLog("Prepare to next account...", "swap");
-        for (let ms = getRandomDelay(); ms > 0; ms -= 1000) {
+        for (let ms = getRandomDelay("delay"); ms > 0; ms -= 1000) {
           twisters.put("c", {
             active: false,
             text: `└── Info          : Delaying for ${msToTime(ms)}
