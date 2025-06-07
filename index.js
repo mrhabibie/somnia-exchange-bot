@@ -385,6 +385,7 @@ async function autoSwapSttUsdtg() {
     if (lastSwapDirectionSttUsdtg === "USDTG_TO_STT") {
       if (sttBalance < sttAmount) {
         addLog(`Saldo STT tidak cukup: ${sttBalance} < ${sttAmount}`);
+        lastSwapDirectionSttUsdtg = "STT_TO_USDTG";
         await delay(3000);
         return false;
       }
@@ -416,6 +417,7 @@ async function autoSwapSttUsdtg() {
     } else {
       if (usdtgBalance < usdtgAmount) {
         addLog(`Saldo USDT.g tidak cukup: ${usdtgBalance} < ${usdtgAmount}`);
+        lastSwapDirectionSttUsdtg = "USDTG_TO_STT";
         await delay(3000);
         return false;
       }
@@ -484,6 +486,7 @@ async function autoSwapSttNia() {
     if (lastSwapDirectionSttNia === "NIA_TO_STT") {
       if (sttBalance < sttAmount) {
         addLog(`Saldo STT tidak cukup: ${sttBalance} < ${sttAmount}`);
+        lastSwapDirectionSttNia = "STT_TO_NIA";
         await delay(3000);
         return false;
       }
@@ -515,6 +518,7 @@ async function autoSwapSttNia() {
     } else {
       if (niaBalance < niaAmount) {
         addLog(`Saldo NIA tidak cukup: ${niaBalance} < ${niaAmount}`);
+        lastSwapDirectionSttNia = "NIA_TO_STT";
         await delay(3000);
         return false;
       }
