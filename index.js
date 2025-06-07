@@ -277,7 +277,11 @@ async function requestFaucet() {
       addLog("Faucet claimed successfully.", "swap");
       return true;
     } else {
-      addLog(`Claim faucet failed: ${data.details || response.statusText}`);
+      addLog(
+        `Claim faucet failed: ${
+          data.details || data.error || response.statusText
+        }`
+      );
       return false;
     }
   } catch (error) {
